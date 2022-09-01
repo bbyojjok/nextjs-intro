@@ -1,7 +1,14 @@
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Seo from '../components/Seo';
+import { useRouter } from 'next/router';
 
 export default function Home({ results }) {
+  const router = useRouter();
+  const onClick = (movie) => {
+    console.log(movie);
+    router.push(`/movies/${movie.original_title}/${movie.id}`);
+  };
+
   return (
     <>
       <Seo title="Home" />
@@ -12,10 +19,15 @@ export default function Home({ results }) {
           {results?.map((movie) => (
             <li style={{ width: '50%' }} key={movie.id}>
               <img
+                onClick={() => onClick(movie)}
                 style={{ width: '150px' }}
                 src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
               />
-              <div>{movie.original_title}</div>
+              <span style={{ display: 'block' }}>
+                <Link href={`/movies/${movie.original_title}/${movie.id}`}>
+                  <a>{movie.original_title}</a>
+                </Link>
+              </span>
             </li>
           ))}
         </ul>
